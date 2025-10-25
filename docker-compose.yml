@@ -12,6 +12,10 @@ services:
       - ./account_service:/app
     environment:
       - FLASK_DEBUG=1
+      
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=codespot_users
     depends_on:
       - postgres_db
 
