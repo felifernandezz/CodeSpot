@@ -1,0 +1,57 @@
+# CodeSpot/docker_compose.yml
+version: '3.8'
+
+services:
+  #--- Servicio 1: Backend de Usuarios (Flask) ---
+  account_service:
+    build: ./account_service
+    container_name: account_service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./account_service:/app
+    environment:
+      - FLASK_DEBUG=1
+    depends_on:
+      - postgres_db
+
+  #--- Servicio 2: Backend de Snippets (Node.js) ---
+  snippet_service:
+    build: ./sniippet_service
+    container_name: sniippet_service
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./sniippet_service./app
+    depends_on:
+      - mongo_db
+
+  #--- Base de Datos 1: SQL (PostgreSQL) --
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=codespot_users
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  #--- Base de Datos 2: NoSQL (MongoDB) ---
+  mongo_db:
+    image: mongo:latest 
+    container_name: mongo_db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    ports:
+      - "27017:27017" 
+    volumes:
+      - mongo_data:/data/db
+
+# Volúmenes para persistir datos (para que no se borren al apagar)
+volumes:
+  postgres_data:
+  mongo_data:

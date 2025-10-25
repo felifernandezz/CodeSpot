@@ -1,0 +1,8 @@
+# codespot/account_service/requirements.txt
+
+Flask==3.0.3
+psycopg2-binary==2.9.9  # El "driver" para hablar con PostgreSQL
+SQLAlchemy==2.0.30       # El ORM para manejar la base de datos
+Flask-SQLAlchemy==3.1.1  # Integración de SQLAlchemy con Flask
+Flask-Migrate==4.0.7     # Para manejar cambios en la base de datos
+python-dotenv==1.0.1     # Para leer variables de entorno (como la contraseña de la DB)
