@@ -16,6 +16,7 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=codespot_users
+      - JWT_SECRET_KEY=super-secret-key-project
     depends_on:
       - postgres_db
 

@@ -1,6 +1,7 @@
 # codespot/account_service/app/auth/routes.py
 
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from ..extensions import db, bcrypt  
 from ..models import User, Profile   
 
@@ -51,3 +52,35 @@ def return_user_profile(username):
         "username": profile.username,
         "email": profile.user.email
     }), 200
+    
+@auth_bp.route('/login', methods=['POST'])
+def login_user():
+    data= request.get_json()
+    email=data.get('email')
+    password=data.get('password')
+    
+    if not email or not password:
+        return jsonify({"error":"Email y password son requeridos"}),400
+    
+    user=User.query.filter_by(email=email).first()
+    if not user or not bcrypt.check_password_hash(user.password_hash, password):
+        return jsonify({"error": "Credenciales inválidas"}), 401
+    
+    access_token=create_access_token(identity=str(user.id))
+    return jsonify(access_token=access_token),200
+
+@auth_bp.route('/profile/me', methods=['GET'])
+@jwt_required()
+def get_my_profile():
+    user_id=get_jwt_identity()
+    user=User.query.get(user_id)
+    
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}),404
+    
+    return jsonify({
+        "username": user.profile.username,
+        "email": user.email
+    }),200
+    
+    

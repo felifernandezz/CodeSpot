@@ -3,7 +3,7 @@
 import os
 from flask import Flask, jsonify
 from dotenv import load_dotenv
-from .extensions import db, migrate, bcrypt
+from .extensions import db, migrate, bcrypt, jwt
 from . import models
 
 # Cargamos variables de entorno
@@ -20,11 +20,14 @@ def create_app():
     
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+    
+    app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET_KEY")
+    
     # --- Conectar Extensiones ---
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
+    jwt.init_app(app)
 
     # --- Registrar Blueprints ---
     # Importamos nuestro blueprint

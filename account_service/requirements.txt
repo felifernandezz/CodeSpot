@@ -7,3 +7,4 @@ Flask-SQLAlchemy==3.1.1  # Integración de SQLAlchemy con Flask
 Flask-Migrate==4.0.7     # Para manejar cambios en la base de datos
 python-dotenv==1.0.1 
 flask-bcrypt==1.0.1    # Para leer variables de entorno (como la contraseña de la DB)
+flask-jwt-extended==4.5.3  # Para manejar autenticación con JWT
