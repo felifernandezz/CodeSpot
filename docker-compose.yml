@@ -59,6 +59,19 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  #--- Servicio 3: Frontend (React + Vite) ---
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - account_service
+      - snippet_service
+
 # Volúmenes para persistir datos (para que no se borren al apagar)
 volumes:
   postgres_data:
