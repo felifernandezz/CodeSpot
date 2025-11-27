@@ -1,20 +1,22 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { connectDB } from './db';
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Snippet Service is running!');
+connectDB();
+
+app.get('/db', (req: Request, res: Response) => {
+    res.json({ message: '¡El servicio de Snippets (Node.js + Mongo) está funcionando!' });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
