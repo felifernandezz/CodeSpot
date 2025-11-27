@@ -28,6 +28,9 @@ services:
     volumes:
       - ./snippet_service:/app
       - /app/node_modules
+    environment:
+      - JWT_SECRET_KEY=super-secret-key-project
+      - MONGO_URI=mongodb://admin:admin@mongo_db:27017/codespot?authSource=admin
     depends_on:
       - mongo_db
 
